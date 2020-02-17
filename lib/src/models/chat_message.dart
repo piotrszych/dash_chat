@@ -1,36 +1,54 @@
 part of dash_chat;
 
-/// A message data structure used by dash chat to handle messages
-/// and also to handle quick replies
+/// A message data structure used by dash_chat to handle messages
+/// as well as quick replies.
 class ChatMessage {
-  /// Id of the message if no id is supplied a new id is assigned
-  /// using a [UUID v4] this behaviour could be overriden by provind
-  /// and [optional] paramter called [messageIdGenerator].
-  /// [messageIdGenerator] take a function with this
-  /// signature [String Function()]
+  /// ID of the message.
+  ///
+  /// If no ID is supplied, a new ID is assigned using a [Uuid.v4] method.
+  /// This behaviour could be overridden by providing an *optional*
+  /// parameter `messageIdGenerator`.
+  ///
+  /// This parameter is *required*.
   String id;
 
-  /// Actual text message.
+  /// Actual text of the message.
   String text;
 
-  /// It's a [non-optional] pararmter which specifies the time the
-  /// message was delivered takes a [DateTime] object.
+  /// Message delivery time.
+  ///
+  /// Specifies the time the message was delivered.
+  ///
+  /// This parameter is *optional*. If no value is provided,
+  /// the [DateTime.now] value will be used.
   DateTime createdAt;
 
-  /// Takes a [ChatUser] object which is used to distinguish between
-  /// users and also provide avaatar URLs and name.
+  /// An [ChatUser] object describing the user who sent the message.
+  ///
+  /// It's used to distinguish between users and provide user's name and avatar.
+  ///
+  /// This parameter is *required*.
   ChatUser user;
 
-  /// A [non-optional] parameter which is used to display images
-  /// takes a [Sring] as a url
+  /// URL to the message's image.
+  ///
+  /// The value is **not** validated in the constructor nor anywhere else
+  /// in the [ChatMessage] object.
+  ///
+  /// This parameter is *optional*.
   String image;
 
-  /// A [non-optional] parameter which is used to display vedio
-  /// takes a [Sring] as a url
+  /// URL to the message's video.
+  ///
+  /// The value is **not** validated in the constructor nor anywhere else
+  /// in the [ChatMessage] object.
+  ///
+  /// This parameter is *optional*.
   String video;
 
-  /// A [non-optional] parameter which is used to show quick replies
-  /// to the user
+  /// [QuickReplies] available for this [ChatMessage].
+  ///
+  /// This parameter is *optional*.
   QuickReplies quickReplies;
 
   ChatMessage({
@@ -55,6 +73,7 @@ class ChatMessage {
     id = json['id'];
     text = json['text'];
     image = json['image'];
+    // 'vedio' key kept for backwards compatibility
     video = json['video'] ?? json['vedio'];
     createdAt = DateTime.fromMillisecondsSinceEpoch(json['createdAt']);
     user = ChatUser.fromJson(json['user']);
